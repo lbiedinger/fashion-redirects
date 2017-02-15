@@ -2,6 +2,10 @@
 # frozen_string_literal: true
 
 $LOAD_PATH.unshift(File.expand_path('../../lib', __FILE__))
-require 'europeana/fashion_redirect/app'
+
+require 'dotenv'
+Dotenv.load
+
+require 'europeana/fashion_redirects/app'
 require 'irb'
 IRB.start
