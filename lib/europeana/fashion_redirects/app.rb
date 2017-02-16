@@ -15,7 +15,7 @@ module Europeana
       end
 
       get '/' do
-        redirect to('http://www.europeana.eu/portal/collections/fashion'), 302
+        redirect to('http://www.europeana.eu/portal/collections/fashion'), 301
       end
 
       get '/record/a/:hash' do
@@ -23,7 +23,7 @@ module Europeana
 
         if result.count == 1
           id = result.first[:europeana_id]
-          redirect to("http://www.europeana.eu/portal/record#{id}.html"), 302
+          redirect to("http://www.europeana.eu/portal/record#{id}.html"), 301
         else
           headers({ 'Content-Type' => 'text/plain;charset=utf-8' })
           status 404
