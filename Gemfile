@@ -3,8 +3,8 @@ source 'https://rubygems.org'
 
 ruby '2.3.1'
 
-gem 'mongo'
 gem 'newrelic_rpm'
+gem 'pg'
 gem 'rake'
 gem 'sinatra'
 

@@ -4,20 +4,17 @@
 require 'cgi'
 require 'net/http'
 require 'json'
-require 'mongo'
+require 'pg'
 
-unless ENV.key?('API_KEY') && ENV.key?('MONGO_URI')
-  puts 'Error: API_KEY and MONGO_URI env vars are required.'
+unless ENV.key?('API_KEY') && ENV.key?('DATABASE_URL')
+  puts 'Error: API_KEY and DATABASE_URL env vars are required.'
   exit 1
 end
 
 API_URL = 'https://www.europeana.eu/api/v2'
 api_key = ENV['API_KEY']
 
-# e.g. MONGO_URI="mongodb://127.0.0.1:27017/fashion"
-client = Mongo::Client.new(ENV['MONGO_URI'])
-collection = client[:redirects]
-collection.indexes.create_one({ fashion_hash: 1 }, unique: true)
+pg = PG.connect(ENV['DATABASE_URL'])
 
 cursor = '*'
 i = 0
@@ -38,11 +35,12 @@ while !cursor.nil?
     id = item['id']
     redirect_uri = URI.parse(item['edmIsShownAt'].first)
     edm_is_shown_at_uri = URI.parse(CGI.parse(redirect_uri.query)['shownAt'].first)
-    hash = edm_is_shown_at_uri.path.split('/').last
-    puts "[#{i}] #{hash} => #{id}"
-    collection.insert_one({ fashion_hash: hash, europeana_id: id })
+    src = edm_is_shown_at_uri.path
+    dst = "/portal/record#{id}.html"
+    puts "[#{i}] #{src} => #{dst}"
+    pg.exec_params('INSERT INTO public.redirects (src, dst, site) VALUES ($1, $2, $3)', [src, dst, 'portal'])
   end
   cursor = results['nextCursor']
 end
 
-client.close
+pg.close
