@@ -20,7 +20,7 @@ module Europeana
       end
 
       get '/' do
-        redirect to(settings.sites[:portal] + '/collections/fashion'), 301
+        redirect to(settings.sites[:portal] + '/portal/collections/fashion'), 301
       end
 
       get '*' do
