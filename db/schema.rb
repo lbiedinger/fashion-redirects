@@ -11,18 +11,13 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 20170315110828) do
-
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "redirects", id: :integer, default: -> { "nextval('redirects_id_seq1'::regclass)" }, force: :cascade do |t|
+  create_table "redirects", force: :cascade do |t|
     t.string  "src",              null: false
     t.string  "dst",              null: false
     t.integer "site", default: 0, null: false
     t.index ["src"], name: "index_redirects_on_src", using: :btree
   end
-
-# Could not dump table "redirects-tmp" because of following StandardError
-#   Unknown type 'site' for column 'site'
-
 end
