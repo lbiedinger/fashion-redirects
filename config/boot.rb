@@ -7,3 +7,5 @@ Bundler.require(:default, ENV['RACK_ENV'])
 
 require 'dotenv'
 Dotenv.load
+
+require 'europeana/fashion_redirects'

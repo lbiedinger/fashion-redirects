@@ -3,7 +3,6 @@ require 'newrelic_rpm'
 require 'pg'
 require 'sinatra'
 require 'sinatra/activerecord'
-require 'europeana/fashion_redirects'
 
 module Europeana
   module FashionRedirects
