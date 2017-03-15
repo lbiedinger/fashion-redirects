@@ -5,12 +5,16 @@ Sinatra app to handle redirects for Europeana Fashion URLs
 ## Configuration
 
 Fashion hashes and equivalent Europeana record IDs are expected to be stored in
-MongoDB.
+PostgreSQL.
 
-Set the environment variable `MONGO_URI` to the URI of the MongoDB database,
-e.g. `MONGO_URI="mongodb://127.0.0.1:27017/fashion"`
+Set the environment variable `DATABASE_URL` to the URL of the PostgreSQL
+database, e.g. `DATABASE_URL="postgres://fashion@localhost/fashion_redirects"`
 
-To seed this database, use the script [bin/seed](bin/seed).
+Initialise the database with `bundle exec rake db:setup`.
+
+
+To seed this database from the Europeana Search/Record API, use the script
+[bin/seed](bin/seed).
 
 ## Usage
 

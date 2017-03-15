@@ -1,29 +1,34 @@
 # frozen_string_literal: true
 require 'newrelic_rpm'
-require 'mongo'
+require 'pg'
 require 'sinatra'
-require 'europeana/fashion_redirects'
+require 'sinatra/activerecord'
 
 module Europeana
   module FashionRedirects
     ##
     # Sinatra app to handle redirects for Europeana Fashion URLs
     class App < Sinatra::Base
+      register Sinatra::ActiveRecordExtension
+
       configure do
-        db = Mongo::Client.new(ENV['MONGO_URI'])
-        set :mongo_db, db[:redirects]
+        set :connection, ActiveRecord::Base.connection
+        set :sites, {
+          portal: ENV['SITE_PORTAL_URL'] || 'http://www.europeana.eu',
+          pro: ENV['SITE_PRO_URL'] || 'http://pro.europeana.eu'
+        }
       end
 
       get '/' do
-        redirect to('http://www.europeana.eu/portal/collections/fashion'), 301
+        redirect to(settings.sites[:portal] + '/portal/collections/fashion'), 301
       end
 
-      get '/record/a/:hash' do
-        result = settings.mongo_db.find({ fashion_hash: params['hash'] })
+      get '*' do
+        path = params['splat'].first
+        redirect = Redirect.find_by_src(path)
 
-        if result.count == 1
-          id = result.first[:europeana_id]
-          redirect to("http://www.europeana.eu/portal/record#{id}.html"), 301
+        if redirect.present?
+          redirect to(settings.sites[redirect.site.to_sym] + redirect.dst), 301
         else
           headers({ 'Content-Type' => 'text/plain;charset=utf-8' })
           status 404
