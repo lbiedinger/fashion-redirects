@@ -5,7 +5,6 @@ require 'bundler/setup'
 ENV['RACK_ENV'] ||= 'development'
 Bundler.require(:default, ENV['RACK_ENV'])
 
-require 'dotenv'
-Dotenv.load
+Dotenv.load if defined?(Dotenv)
 
 require 'europeana/fashion_redirects'
