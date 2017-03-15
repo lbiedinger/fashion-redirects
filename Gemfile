@@ -7,6 +7,7 @@ gem 'newrelic_rpm'
 gem 'pg'
 gem 'rake'
 gem 'sinatra'
+gem 'sinatra-activerecord'
 
 group :production do
   gem 'rails_12factor'

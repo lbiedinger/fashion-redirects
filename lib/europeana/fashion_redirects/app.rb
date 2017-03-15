@@ -2,6 +2,7 @@
 require 'newrelic_rpm'
 require 'pg'
 require 'sinatra'
+require 'sinatra/activerecord'
 require 'europeana/fashion_redirects'
 
 module Europeana
@@ -9,8 +10,10 @@ module Europeana
     ##
     # Sinatra app to handle redirects for Europeana Fashion URLs
     class App < Sinatra::Base
+      register Sinatra::ActiveRecordExtension
+
       configure do
-        set :pg_db, PG.connect(ENV['DATABASE_URL'])
+        set :connection, ActiveRecord::Base.connection
         set :sites, {
           portal: ENV['SITE_PORTAL_URL'] || 'http://www.europeana.eu',
           pro: ENV['SITE_PRO_URL'] || 'http://pro.europeana.eu'
@@ -23,18 +26,10 @@ module Europeana
 
       get '*' do
         path = params['splat'].first
-        result = settings.pg_db.exec_params('SELECT * FROM redirects WHERE src=$1', [path])
+        redirect = Redirect.find_by_src(path)
 
-        if result.count == 1
-          rule = result.first
-          if settings.sites.key?(rule['site'].to_sym)
-            redirect to(settings.sites[rule['site'].to_sym] + rule['dst']), 301
-          else
-            # Unrecognised site
-            headers({ 'Content-Type' => 'text/plain;charset=utf-8' })
-            status 500
-            body 'Internal Server Error'
-          end
+        if redirect.present?
+          redirect to(settings.sites[redirect.site.to_sym] + redirect.dst), 301
         else
           headers({ 'Content-Type' => 'text/plain;charset=utf-8' })
           status 404

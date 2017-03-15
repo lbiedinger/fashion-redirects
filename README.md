@@ -10,7 +10,11 @@ PostgreSQL.
 Set the environment variable `DATABASE_URL` to the URL of the PostgreSQL
 database, e.g. `DATABASE_URL="postgres://fashion@localhost/fashion_redirects"`
 
-To seed this database, use the script [bin/seed](bin/seed).
+Initialise the database with `bundle exec rake db:setup`.
+
+
+To seed this database from the Europeana Search/Record API, use the script
+[bin/seed](bin/seed).
 
 ## Usage
 
