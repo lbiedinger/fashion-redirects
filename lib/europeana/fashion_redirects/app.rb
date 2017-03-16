@@ -19,10 +19,6 @@ module Europeana
         }
       end
 
-      get '/' do
-        redirect to(settings.sites[:portal] + '/portal/collections/fashion'), 301
-      end
-
       get '*' do
         path = params['splat'].first
         redirect = Redirect.find_by_src(path)
