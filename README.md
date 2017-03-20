@@ -10,11 +10,11 @@ PostgreSQL.
 Set the environment variable `DATABASE_URL` to the URL of the PostgreSQL
 database, e.g. `DATABASE_URL="postgres://fashion@localhost/fashion_redirects"`
 
-Initialise the database with `bundle exec rake db:setup`.
+Initialise the database with `bundle exec rake db:setup`. The seed script will
+add an initial set of static page redirects.
 
-
-To seed this database from the Europeana Search/Record API, use the script
-[bin/seed](bin/seed).
+To further populate the database with redirects for Europeana Fashion from the
+Europeana Search/Record API, use the script [bin/seed](bin/seed).
 
 ## Usage
 
