@@ -2,8 +2,8 @@
 [
   { src: '/', dst: '/portal/collections/fashion', site: 'portal' },
   { src: '/portal/home.html', dst: '/portal/collections/fashion', site: 'portal' },
-  { src: '/portal/browse.html', dst: '/portal/collections/fashion?q=', site: 'portal' },
-  { src: '/portal/themeoverview.html', dst: '/portal/explore/galleries?theme=fashion', site: 'portal' },
+  { src: '/portal/browse.html', dst: '/portal/collections/fashion?q=&from=europeanafashion.eu', site: 'portal' },
+  { src: '/portal/themeoverview.html', dst: '/portal/explore/galleries?theme=fashion&from=europeanafashion.eu', site: 'portal' },
   { src: '/portal/blogoverview.html', dst: '/portal/blogs?theme=fashion', site: 'portal' },
   { src: '/portal/eventoverview.html', dst: '/portal/events?theme=fashion', site: 'portal' },
   { src: '/portal/about.html', dst: '/europeana-fashion', site: 'pro' },
