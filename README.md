@@ -14,7 +14,8 @@ Initialise the database with `bundle exec rake db:setup`. The seed script will
 add an initial set of static page redirects.
 
 To further populate the database with redirects for Europeana Fashion from the
-Europeana Search/Record API, use the script [bin/seed](bin/seed).
+Europeana Search/Record API, set your API key in the environment variable
+`API_KEY` then use `bundle exec rake fashion:items`.
 
 ## Usage
 

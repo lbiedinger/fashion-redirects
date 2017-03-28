@@ -23,6 +23,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'europeana-api', github: 'europeana/europeana-api-client-ruby', branch: 'develop'
   gem 'foreman'
 end
 
