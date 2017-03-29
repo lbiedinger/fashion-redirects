@@ -14,10 +14,33 @@
   { src: '/press-releases', dst: '/europeana-fashion', site: 'pro' },
   { src: '/press-releases/', dst: '/europeana-fashion', site: 'pro' },
   { src: '/partners', dst: '/europeana-fashion', site: 'pro' },
-  { src: '/partners/', dst: '/europeana-fashion', site: 'pro' },
+  { src: '/partners/', dst: '/europeana-fashion', site: 'pro' }
 ].each do |attrs|
   redirect = Redirect.find_or_create_by(src: attrs[:src])
   redirect.dst = attrs[:dst]
   redirect.site = attrs[:site]
   redirect.save!
+end
+
+# Blog posts
+#
+# Redirect both URLs:
+# * /blog/runway-archive-lapidus-autumn-winter-1996
+# * /2017/03/23/runway-archive-lapidus-autumn-winter-1996/
+# to:
+# * /portal/en/blogs/[NEW-SLUG]
+# where [NEW-SLUG] results from the import into Pro. Map of paths/slugs is in
+# db/seeds/blog_posts.yml
+YAML.load_file(File.expand_path('../seeds/blog_posts.yml', __FILE__)).each do |post|
+  fashion_blog_host_src = post[:wp_src]
+  fashion_portal_host_src = '/blog/' + post[:wp_src].split('/')[-1]
+
+  collections_portal_host_dst = post[:pro_dst].sub(%r{\A/blogpost/}, '/portal/en/blogs/')
+
+  [fashion_blog_host_src, fashion_portal_host_src].each do |src|
+    redirect = Redirect.find_or_create_by(src: src)
+    redirect.dst = collections_portal_host_dst
+    redirect.site = 'portal'
+    redirect.save!
+  end
 end
