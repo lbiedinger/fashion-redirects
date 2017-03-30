@@ -21,7 +21,16 @@ module Europeana
 
       get '*' do
         path = params['splat'].first
-        redirect = Redirect.find_by_src(path)
+
+        if path == '/portal/eventdetail.html'
+          # Lookup redirects for URLs like /portal/eventdetail.html?event=exhibition-brides-at-the-leventis-museum
+          # at /all-events/exhibition-brides-at-the-leventis-museum/
+          src = "/all-events/#{params[:event]}/"
+        else
+          src = path
+        end
+
+        redirect = Redirect.find_by_src(src)
 
         if redirect.present?
           redirect to(settings.sites[redirect.site.to_sym] + redirect.dst), 301
