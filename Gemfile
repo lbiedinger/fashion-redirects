@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 
 ruby '2.3.1'
 
+gem 'europeana-api', github: 'europeana/europeana-api-client-ruby', branch: 'develop'
 gem 'newrelic_rpm'
 gem 'pg'
 gem 'rake'
@@ -23,7 +24,6 @@ group :development, :test do
 end
 
 group :development do
-  gem 'europeana-api', github: 'europeana/europeana-api-client-ruby', branch: 'develop'
   gem 'foreman'
 end
 
