@@ -44,3 +44,26 @@ YAML.load_file(File.expand_path('../seeds/blog_posts.yml', __FILE__)).each do |p
     redirect.save!
   end
 end
+
+# Events
+#
+# Redirect both URLs:
+# * /all-events/exhibition-brides-at-the-leventis-museum
+# * /eventdetail.html?event=exhibition-brides-at-the-leventis-museum
+# to:
+# * /portal/en/events/[NEW-SLUG]
+# where [NEW-SLUG] results from the import into Pro. Map of paths/slugs is in
+# db/seeds/events.yml
+YAML.load_file(File.expand_path('../seeds/events.yml', __FILE__)).each do |post|
+  fashion_event_blog_host_src = post[:wp_src]
+  fashion_portal_host_src = '/eventdetail.html?event=' + post[:wp_src].split('/')[-1]
+
+  collections_portal_host_dst = post[:pro_dst].sub(%r{\A/event/}, '/portal/en/events/')
+
+  [fashion_event_blog_host_src, fashion_portal_host_src].each do |src|
+    redirect = Redirect.find_or_create_by(src: src)
+    redirect.dst = collections_portal_host_dst
+    redirect.site = 'portal'
+    redirect.save!
+  end
+end
